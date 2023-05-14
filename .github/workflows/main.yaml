@@ -25,7 +25,8 @@ jobs:
       env:
        TOKEN: "234"
       run:  |
-          sed -i "s/TOKEN_PLACEHOLDER/$(echo ${{ env.TOKEN }})/g" src/App.java
+          sed -i "s/<your_access_token>/$(echo ${{ env.TOKEN }})/g" src/App.java
+         # sed -i "s/<your_access_token>/${{ secrets.ACCESS_TOKEN }}/g" src/App.java
         
     - name: Display updated Java file
       run: cat src/App.java
