@@ -23,7 +23,8 @@ jobs:
 
     - name: Replace access token in Java code
       env:
-       ACCESS_TOKEN: "234"
+        WORKER_API_ENDPOINT: myworkerapi.com
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
          
           envsubst < src/WorkerApiExample.java.template > src/App.java
