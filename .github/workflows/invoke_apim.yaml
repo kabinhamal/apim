@@ -1,0 +1,37 @@
+name: Invoke Azure API Management
+
+on:
+  push:
+    branches:
+      - feature
+      
+
+jobs:
+  invoke-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Java JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      - name: Build Jar file
+        run: |
+          javac -d . src/main/java/com/example/MyApplication.java
+          jar cfe MyApplication.jar com.example.MyApplication com/example/*.class
+
+      - name: Install cURL
+        run: sudo apt-get install curl
+
+      - name: Get Access Token
+        run: |
+          RESPONSE=$(curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "client_id=${{ secrets.CLIENT_ID }}&client_secret=${{ secrets.CLIENT_SECRET }}&grant_type=client_credentials&scope=https://management.azure.com/.default" https://login.microsoftonline.com/{{ secrets.TENANT_ID }}/oauth2/v2.0/token)
+          ACCESS_TOKEN=$(echo $RESPONSE | jq -r '.access_token')
+
+      - name: Invoke API
+        run: |
+          curl -H "Authorization: Bearer $ACCESS_TOKEN" https://{{ secrets.API_MANAGEMENT_URL }}/api/path
