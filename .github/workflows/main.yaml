@@ -17,8 +17,8 @@ jobs:
       with:
         java-version: '11'
 
-    - name: Build with Maven
-      run: mvn clean install
+#     - name: Build with Maven
+#       run: mvn clean install
 
     - name: Replace token in Java file
       run: sed -i "s/TOKEN_PLACEHOLDER/$(echo ${{ secrets.TOKEN }})/g" src/App.java
