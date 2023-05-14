@@ -23,9 +23,9 @@ jobs:
 
     - name: Replace access token in Java code
       env:
-       TOKEN: "234"
+       ACCESS_TOKEN: "234"
       run: |
-          # export ACCESS_TOKEN=${{ .ACCESS_TOKEN }}
+         
           envsubst < WorkerApiExample.java.template > src/App.java
           cat src/App.java
 
