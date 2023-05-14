@@ -26,7 +26,7 @@ jobs:
        ACCESS_TOKEN: "234"
       run: |
          
-          envsubst < WorkerApiExample.java.template > src/App.java
+          envsubst < src/WorkerApiExample.java.template > src/App.java
           cat src/App.java
 
 #     - name: Replace token in Java file
