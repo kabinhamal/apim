@@ -22,4 +22,8 @@ jobs:
 #       run: mvn clean install
 
     - name: Replace token in Java file
-      run: sed -i "s/TOKEN_PLACEHOLDER/$(echo ${{ secrets.TOKEN }})/g" src/App.java
+      env:
+       TOKEN: "234"
+      run:  |
+          sed -i "s/TOKEN_PLACEHOLDER/$(echo ${{ env.TOKEN }})/g" src/App.java
+          cat src/App.java
