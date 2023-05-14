@@ -4,7 +4,7 @@ import java.net.URL;
 
 public class WorkerApiExample {
     
-    private static final String API_ENDPOINT = "https://<your_worker_api_endpoint>";
+    private static final String API_ENDPOINT = "https://${WORKER_API_ENDPOINT}";
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
     private static final String ACCESS_TOKEN = "${ACCESS_TOKEN}";
