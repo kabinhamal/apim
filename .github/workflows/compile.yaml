@@ -1,0 +1,35 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      APIM_SERVICE_NAME: ${{ secrets.APIM_SERVICE_NAME }}
+      RESOURCE: https://${{ secrets.APIM_SERVICE_NAME }}.azure-api.net
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+    - name: Setup Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+    - name: Substitute Environment Variables
+      run: |
+        sed -i "s|<your-client-id>|${CLIENT_ID}|g" src/App.java
+        sed -i "s|<your-client-secret>|${CLIENT_SECRET}|g" src/App.java
+        sed -i "s|<your-apim-service-name>|${APIM_SERVICE_NAME}|g" src/App.java
+        
+    - name: Compile
+      run: |
+        javac -d . src/main/java/AuthHelper.java
+        
+    - name: Create JAR
+      run: |
+        jar cfe AuthHelper.jar AuthHelper AuthHelper/*.class
+    - name: Run JAR File
+      run: java -jar AuthHelper.jar
